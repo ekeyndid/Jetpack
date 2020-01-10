@@ -17,6 +17,6 @@ void main() {
 	if(diff > 0.0){
 		spec = pow(spec,14.0);
 	}
-	//fragColor =  ka + (diff * kd) + (spec * ks);	
-	fragColor =  ka+kd+ks; 
+	fragColor =  ka + (diff * kd) + (spec * ks);	
+} 
 
