@@ -11,16 +11,11 @@ class Scene0 : public Scene {
 private:
 	SDL_Window *window;
 	const SDL_Rect* ye;
-	Body* jetski;
-	Body* jetski2;
-	SDL_Surface* jetskiImage;
-	SDL_Surface* jetskiImage2;
-	SDL_Surface* waterImage;
+	Body* Player;
+	SDL_Surface* PlayerImage;
 	Matrix4 projection;
 	float elapsedTime;
-	Vec3 Force;
-	Vec3 Force2;
-	float totalTime;
+	float Direction;
 
 	
 	

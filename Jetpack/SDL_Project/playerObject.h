@@ -6,11 +6,11 @@
 class playerObject : public GameObject, public Body
 {
 public:
-	SDL_Surface* ballimage;
+	SDL_Surface* Image;
 	
 	
 	
-	void Update(const float deltaTime);
+	//void Update(const float deltaTime);
 	bool OnCreate();
 	void OnDestory();
 	//void Update(const float deltaTime);
