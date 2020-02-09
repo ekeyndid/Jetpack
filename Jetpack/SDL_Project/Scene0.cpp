@@ -2,6 +2,7 @@
 #include <SDL_image.h> 
 #include <SDL.h>
 #include <SDL_ttf.h>
+
 Scene0::Scene0(SDL_Window* sdlWindow_){
 	window = sdlWindow_;
 	
@@ -15,9 +16,22 @@ bool Scene0::OnCreate() {
 	int w, h;
 	SDL_GetWindowSize(window,&w,&h);
 	Matrix4 ndc = MMath::viewportNDC(w, h);
-	Matrix4 ortho = MMath::orthographic(-10.0f, 200.0f, 0.0f, 10.0f, 0.0f, 10.0f);
+	Matrix4 ortho = MMath::orthographic(-100.0f, 100.0f, -15.0f, 100.0f, 0.0f, 1.0f);
 	projection = ndc * ortho;
 	
+	if (!Player.OnCreate(Vec3(0.0f, 0.0f, 0.0f),
+		Vec3(0.0f, 0.0f, 0.0f),
+		Vec3(0.0f, 0.0f, 0.0f),
+		1, "PlayerObject", 1)) {
+		std::cout << "Player Creation Failed" << std::endl;
+		return false;
+	}
+	else {
+		std::cout << "Player Creation Succeded" << std::endl;
+	}
+
+	
+	Player.Print();
 
 	//jetski = new Body();
 	//jetski->BodyOnCreate(Vec3(0.0f, 0.0f, 0.0f),
@@ -36,26 +50,31 @@ bool Scene0::OnCreate() {
 }
 
 void Scene0::OnDestroy() {
+	Player.OnDestory();
 	
 }
 
 void Scene0::Update(const float time) {
-	
+	Player.Update(time);
 }
 
 void Scene0::HandleEvents(const SDL_Event& event) {
 	
+
+	Player.HandleEvents(event);
 }
 
 
 void Scene0::Render() {
-	//Vec3 pos = 
+	//std::cout << "Scene0 Rendering" << std::endl;
+	Vec3 pos = Player.GetPos();
 	
-	//Vec3 screenPos = 
-	
-	//SDL_Rect dstrect;
-	//dstrect.x = 
-	//dstrect.y = 
+	Vec3 screenPos = projection * pos;
+
+	SDL_Rect dstrect;
+	dstrect.x = static_cast<int>(screenPos.x);
+	dstrect.y = static_cast<int>(screenPos.y);
+
 
 
 
@@ -63,8 +82,7 @@ void Scene0::Render() {
 	
 	SDL_Surface *screenSurface = SDL_GetWindowSurface(window);
 	SDL_FillRect(screenSurface, nullptr, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
-
-	//SDL_BlitSurface(image, nullptr, screenSurface, &dstrect);
+	SDL_BlitSurface(Player.Image, nullptr, screenSurface, &dstrect);
 
 	
 	
@@ -72,6 +90,7 @@ void Scene0::Render() {
 	
 		
 		SDL_UpdateWindowSurface(window);
+		//SDL_BlitSurface(Player.Image, nullptr, screenSurface, &dstrect);
 }
 
 

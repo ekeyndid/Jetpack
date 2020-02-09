@@ -15,8 +15,8 @@ GameManager::GameManager() {
 
 /// In this OnCreate() method, fuction, subroutine, whatever the word, 
 bool GameManager::OnCreate() {
-	const int SCREEN_WIDTH = 400;
-	const int SCREEN_HEIGHT = 400;
+	const int SCREEN_WIDTH = 720;
+	const int SCREEN_HEIGHT = 480;
 	ptr = new Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (ptr == nullptr) {
 		OnDestroy();
@@ -33,7 +33,7 @@ bool GameManager::OnCreate() {
 		return false;
 	}
 
-	currentScene = new Scene1(ptr->GetSDL_Window());
+	currentScene = new Scene0(ptr->GetSDL_Window());
 	if (currentScene == nullptr) {
 		OnDestroy();
 		return false;
@@ -77,51 +77,14 @@ void GameManager::HandleEvents() {
 		//std::cout << a.type << std::endl;
 		switch (a.type) {
 		case SDL_EventType::SDL_QUIT:
-			SDL_Log("program finna closed at %i ticks", a.quit.timestamp);
+			SDL_Log("program finna close at %i seconds", a.quit.timestamp/1000);
 			isRunning = false;
 			return;
-		case SDL_EventType::SDL_KEYDOWN:
-			
-			switch (a.key.keysym.sym) {
-			case SDLK_LEFT:
-				//std::cout << "Left press" << std::endl;
-				currentScene->Direction = -1;
-				break;
-			case SDLK_RIGHT:
-				//std::cout << "Right press" << std::endl;
-				currentScene->Direction = 1;
-				break;
-			case SDLK_SPACE:
-				currentScene->go = true;
-			default:
-				//std::cout << "No Press" << std::endl;
-				currentScene->Direction = 0;
-				break;
-			}
-			break;
-		case SDL_EventType::SDL_KEYUP:
-
-			switch (a.key.keysym.sym) {
-			case SDLK_LEFT:
-				//std::cout << "Left press up" << std::endl;
-				currentScene->Direction = 0;
-				break;
-			case SDLK_RIGHT:
-				//std::cout << "Right press up" << std::endl;
-				currentScene->Direction = 0;
-				break;
-			default:
-				//std::cout << "No Press up" << std::endl;
-				currentScene->Direction = 0;
-				break;
-			}
-			break;
-			
-		
 		default:
-			break;
-
+			currentScene->HandleEvents(a);
 		}
+		
+		
 	}
-	
 }
+	

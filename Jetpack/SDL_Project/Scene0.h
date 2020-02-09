@@ -5,18 +5,17 @@
 #include "MMath.h"
 #include "Scene.h"
 #include <SDL.h>
-
+#include "playerObject.h"
 using namespace MATH;
 class Scene0 : public Scene {
 private:
 	SDL_Window *window;
 	const SDL_Rect* ye;
-	Body* Player;
 	SDL_Surface* PlayerImage;
 	Matrix4 projection;
 	float elapsedTime;
 	float Direction;
-
+	playerObject Player;
 	
 	
 
