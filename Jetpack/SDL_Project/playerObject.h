@@ -12,14 +12,19 @@ public:
 	float Direction = 0;
 	float SphereRadiusBox = 69;
 	bool grounded = false;
+	bool ijump = true;
+	bool floating = false;
+	float charge = 2.0f;
+	float WalkSpeed = 10;
 	//void Update(const float deltaTime);
+	void Jump(float Force);
 	bool OnCreate();
 	bool OnCreate(Vec3 pos_, Vec3 vel_, Vec3 accel_, float mass_, std::string name_, float Rad_);
 	void OnDestory();
 	void Update(const float deltaTime);
 	void Render() const;
 	void HandleEvents(const SDL_Event& SDL_Event);
-	void ApplyHor(float x_);
+	void ApplyVel(Vec3 Velos);
 
 };
 

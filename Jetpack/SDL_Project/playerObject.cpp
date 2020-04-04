@@ -8,6 +8,7 @@ bool playerObject::OnCreate() {
 	Name = "bad";
 	SphereRadiusBox = 1;
 	Image = nullptr;
+	Tag = "Player";
 	return true;
 }
 bool playerObject::OnCreate(Vec3 pos_, Vec3 vel_, Vec3 accel_, float mass_, std::string name_, float Rad_) {
@@ -20,6 +21,7 @@ bool playerObject::OnCreate(Vec3 pos_, Vec3 vel_, Vec3 accel_, float mass_, std:
 	Image = IMG_Load("player.jpg");
 	if (Image != nullptr) {
 		return true;
+		grounded = false;
 	}
 	else {
 		return false;
@@ -30,14 +32,24 @@ void playerObject::OnDestory() {
 	delete Image;
 }
 void playerObject::Update(const float deltaTime) {
+	std::cout << charge << std::endl;
 	
-	if (grounded) {
+	
+	if (grounded && ijump) {
 		vel.y = 0;
 		accel.y = 0;
+		ijump = false;
+		charge = 2.0f;
+		WalkSpeed = 10;
 	}
-	else if (!grounded) {
-		ApplyForce(Vec3(0.0f, -5.0f, 0.0f));
+	else if (!grounded && !floating) {
+		ApplyForce(Vec3(0.0f, -10.0f, 0.0f));
 	}
+	else if (floating) {
+		vel.y = 0;
+		WalkSpeed = 20;
+	}
+	ApplyVel(Vec3(Direction * WalkSpeed, vel.y, vel.z));
 	// TEMP TEST
 	if (pos.y < -5.0f) {
 		grounded = true;
@@ -50,11 +62,36 @@ void playerObject::Update(const float deltaTime) {
 
 	pos.z += vel.z * deltaTime + 0.5f * accel.z * deltaTime * deltaTime;
 	vel.z += accel.z * deltaTime;
+	if (floating) {
+		charge -= 0.01;
+	}
+	if (charge <= 0) {
+		floating = false;
+		charge = 0.0f;
+	}
 }
-void playerObject::ApplyHor(float x_){
-	vel.x = x_;
+void playerObject::ApplyVel (Vec3 Velos) {
+	
+
+	vel.x = Velos.x;
+	vel.y = Velos.y;
+	vel.z = Velos.z;
 }
 void playerObject::Render() const{
+
+}
+void playerObject::Jump(float Force) {
+	if (grounded && !ijump) {
+		ijump = true;
+		Direction = Direction;
+		grounded = false;
+		ApplyVel(Vec3(Direction, Force, 0));
+	}
+	else if (!grounded && ijump && !floating) {
+		floating = true;
+
+	}
+	
 
 }
 void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
@@ -71,7 +108,7 @@ void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
 			Direction = 1;
 			break;
 		case SDLK_SPACE:
-
+			Jump(20.0f);
 		default:
 			//std::cout << "No Press" << std::endl;
 			Direction = 0;
@@ -89,6 +126,8 @@ void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
 			//std::cout << "Right press up" << std::endl;
 			Direction = 0;
 			break;
+		case SDLK_SPACE:
+			
 		default:
 			//std::cout << "No Press up" << std::endl;
 			Direction = 0;
@@ -101,7 +140,7 @@ void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
 		break;
 
 	}
-	std::cout << Direction << std::endl;
+	
 }
 
 
