@@ -46,7 +46,7 @@ void playerObject::Update(const float deltaTime) {
 		ApplyForce(Vec3(0.0f, -10.0f, 0.0f));
 	}
 	else if (floating) {
-		vel.y = 0;
+		vel.y = YVel*WalkSpeed;
 		WalkSpeed = 20;
 	}
 	ApplyVel(Vec3(Direction * WalkSpeed, vel.y, vel.z));
@@ -103,6 +103,9 @@ void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
 			//std::cout << "Left press" << std::endl;
 			Direction = -1;
 			break;
+		case SDLK_UP:
+			YVel = 1;
+			break;
 		case SDLK_RIGHT:
 			//std::cout << "Right press" << std::endl;
 			Direction = 1;
@@ -128,6 +131,9 @@ void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
 			break;
 		case SDLK_SPACE:
 			
+		case SDLK_UP:
+			YVel = 0;
+			break;
 		default:
 			//std::cout << "No Press up" << std::endl;
 			Direction = 0;
