@@ -49,7 +49,7 @@ void playerObject::Update(const float deltaTime) {
 		vel.y = YVel*WalkSpeed;
 		WalkSpeed = 20;
 	}
-	ApplyVel(Vec3(Direction * WalkSpeed, vel.y, vel.z));
+	ApplyVel(Vec3(Direction * WalkSpeed * XLock, vel.y, vel.z));
 	// TEMP TEST
 	if (pos.y < -5.0f) {
 		grounded = true;
@@ -105,6 +105,7 @@ void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
 			break;
 		case SDLK_UP:
 			YVel = 1;
+			XLock = 0;
 			break;
 		case SDLK_RIGHT:
 			//std::cout << "Right press" << std::endl;
@@ -133,6 +134,7 @@ void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
 			
 		case SDLK_UP:
 			YVel = 0;
+			XLock = 1;
 			break;
 		default:
 			//std::cout << "No Press up" << std::endl;

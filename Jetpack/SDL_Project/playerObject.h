@@ -17,6 +17,7 @@ public:
 	float charge = 2.0f;
 	float WalkSpeed = 10;
 	float YVel = 0;
+	float XLock = 1;
 	//void Update(const float deltaTime);
 	void Jump(float Force);
 	bool OnCreate();
