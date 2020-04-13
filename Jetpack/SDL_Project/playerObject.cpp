@@ -107,6 +107,10 @@ void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
 			YVel = 1;
 			XLock = 0;
 			break;
+		case SDLK_DOWN:
+			YVel = -1;
+			XLock = 0;
+			break;
 		case SDLK_RIGHT:
 			//std::cout << "Right press" << std::endl;
 			Direction = 1;
@@ -131,7 +135,10 @@ void playerObject::HandleEvents(const SDL_Event& SDL_Event) {
 			Direction = 0;
 			break;
 		case SDLK_SPACE:
-			
+		case SDLK_DOWN:
+			YVel = 0;
+			XLock = 1;
+			break;
 		case SDLK_UP:
 			YVel = 0;
 			XLock = 1;
