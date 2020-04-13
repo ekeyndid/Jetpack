@@ -33,7 +33,12 @@ void playerObject::OnDestory() {
 }
 void playerObject::Update(const float deltaTime) {
 	std::cout << charge << std::endl;
-	
+	if (pos.x < -100) {
+		pos.x = 99;
+	}
+	else if (pos.x > 100) {
+		pos.x = -99;
+	}
 	
 	if (grounded && ijump) {
 		vel.y = 0;
